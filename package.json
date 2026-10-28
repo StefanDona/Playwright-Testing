@@ -1,0 +1,29 @@
+{
+	"name": "playwright-testing",
+	"version": "1.0.0",
+	"description": "Automated E2E tests for the Practice Software Testing eCommerce platform using Playwright",
+	"scripts": {
+		"test": "playwright test",
+		"test:headed": "playwright test --headed",
+		"test:ui": "playwright test --ui",
+		"test:report": "playwright show-report reports/html",
+		"typecheck": "tsc --noEmit",
+		"oxfmt:check": "oxfmt --check",
+		"oxfmt:fix": "oxfmt"
+	},
+	"author": "Stefan",
+	"license": "ISC",
+	"devDependencies": {
+		"@faker-js/faker": "^10.6.0",
+		"@playwright/test": "^1.55.0",
+		"@types/node": "^22.0.0",
+		"dotenv": "^17.2.0",
+		"oxfmt": "^0.49.0",
+		"typescript": "^5.8.0"
+	},
+	"overrides": {
+		"oxfmt": {
+			"tinypool": "2.1.2"
+		}
+	}
+}
