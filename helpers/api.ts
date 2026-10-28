@@ -8,6 +8,7 @@ export interface Product {
   id: string;
   name: string;
   price: number;
+  in_stock: boolean;
 }
 
 export interface Customer {
@@ -60,13 +61,25 @@ export async function getCategoryIdByName(
   return category.id;
 }
 
-export async function getProductsByCategoryId(
+export async function getInStockProductByCategoryId(
   request: APIRequestContext,
   categoryId: string
-): Promise<Product[]> {
-  const response = await request.get(`${API_URL}/products?by_category=${categoryId}`);
-  expect(response.ok(), 'Products API request should succeed').toBeTruthy();
-  const body: { data: Product[] } = await response.json();
-  expect(body.data.length, 'Category should contain at least one product').toBeGreaterThan(0);
-  return body.data.map(({ id, name, price }) => ({ id, name, price }));
+): Promise<Product> {
+  let page = 1;
+  let lastPage: number;
+  do {
+    const response = await request.get(`${API_URL}/products`, {
+      params: { by_category: categoryId, page },
+    });
+    expect(response.ok(), 'Products API request should succeed').toBeTruthy();
+    const body: { data: Product[]; last_page: number } = await response.json();
+    const product = body.data.find((item) => item.in_stock === true);
+    if (product) {
+      return product;
+    }
+    lastPage = body.last_page;
+    page++;
+  } while (page <= lastPage);
+
+  throw new Error(`No in-stock product found in category "${categoryId}"`);
 }

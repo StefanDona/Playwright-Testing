@@ -1,4 +1,4 @@
-import { getCategoryIdByName, getProductsByCategoryId } from '../helpers/api';
+import { getCategoryIdByName, getInStockProductByCategoryId } from '../helpers/api';
 import { expect, test } from '../fixtures';
 
 test.describe('Place Order Tests', () => {
@@ -11,7 +11,7 @@ test.describe('Place Order Tests', () => {
     placeOrderPage,
   }) => {
     const categoryId = await getCategoryIdByName(request, 'Pliers');
-    const [product] = await getProductsByCategoryId(request, categoryId);
+    const product = await getInStockProductByCategoryId(request, categoryId);
 
     await loginPage.navigateToLoginPage();
     await loginPage.login(customer.email, customer.password);
@@ -35,7 +35,7 @@ test.describe('Place Order Tests', () => {
 
   test('Place an order as a guest user', async ({ page, request, headerPage, placeOrderPage }) => {
     const categoryId = await getCategoryIdByName(request, 'Pliers');
-    const [product] = await getProductsByCategoryId(request, categoryId);
+    const product = await getInStockProductByCategoryId(request, categoryId);
 
     await page.goto(`/product/${product.id}`);
     await placeOrderPage.addToCartButton.click();
