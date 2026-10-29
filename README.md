@@ -1,8 +1,6 @@
 # Playwright E2E Testing Demo
 
-[![Playwright Tests](https://github.com/StefanDona/Playwright-Testing/actions/workflows/playwright.yml/badge.svg)](https://github.com/StefanDona/Playwright-Testing/actions/workflows/playwright.yml)
-
-A runnable QA automation demo for [Practice Software Testing](https://practicesoftwaretesting.com), built with Playwright, TypeScript, and the Page Object Model.
+A runnable QA automation demo for [Practice Software Testing](https://practicesoftwaretesting.com), built with Playwright, TypeScript, and the Page Object Model. It migrates all 10 scenarios from [my TestCafe / JavaScript project](https://github.com/StefanDona/TestCafe-Testing).
 
 ## Quick Start
 
@@ -40,7 +38,7 @@ Checkout scenarios verify the add-to-cart notification, quantity, API-derived pr
 - **Page Objects** encapsulate locators and user interactions.
 - **Typed fixtures** provide a fresh browser context and page objects for each test.
 - **Independent test data:** authentication tests and registered checkout create their own customer through the API. Registration itself remains a UI test. Faker supplies synthetic registration, guest, billing, and payment data.
-- **API-assisted setup:** checkout selects the first product returned for the Pliers category instead of hard-coding a product ID or price.
+- **API-assisted setup:** before each checkout, the API selects the first Pliers-category product with `in_stock: true`, checking subsequent pages if needed, instead of hard-coding a product ID or price. If none are available, setup fails with an explicit error. Tests do not modify shared stock.
 - **Web-first assertions:** Playwright retries checks; category validation polls until all displayed titles match. No fixed sleeps are used.
 - **Failure evidence:** HTML and JUnit reports, screenshots and video on failure, and a trace on the first retry.
 
@@ -72,16 +70,15 @@ No real credentials or payment details are needed. `.env` variants, browser auth
 
 Tests create synthetic accounts and demo orders on an external sandbox. They do not delete that data afterwards; the sandbox controls its own resets. Availability, rate limits, application changes, and resets can affect runs. A passing run demonstrates the covered flows, not complete application coverage.
 
-## GitHub Actions
+## Local execution
 
-The [workflow](.github/workflows/playwright.yml) runs on pushes and pull requests to `main`, and can also be started manually from the Actions tab. It installs dependencies and Chromium, checks TypeScript and formatting, and executes all scenarios. CI uses one worker and up to two retries to limit load on the shared sandbox.
+Run the suite locally with `npm test`. The GitHub Actions workflow has been removed because Cloudflare blocks requests from GitHub-hosted runners to the public sandbox.
 
-Download the `playwright-reports` artifact from a workflow run for HTML/JUnit reports and available failure evidence. Artifacts are retained for 7 days. Generated demo credentials may appear in traces or screenshots; no personal credentials should be used.
+HTML/JUnit reports and available failure evidence are saved locally in `reports/` and `test-results/`. Use `npm run test:report` to open the HTML report. Generated demo credentials may appear in traces or screenshots; no personal credentials should be used.
 
 ## Structure
 
 ```text
-.github/workflows/  GitHub Actions pipeline
 tests/              The 10 migrated E2E scenarios
 pages/              Page Object classes
 fixtures/           Typed page-object and customer fixtures
