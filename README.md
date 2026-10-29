@@ -2,7 +2,7 @@
 
 [![Playwright Tests](https://github.com/StefanDona/Playwright-Testing/actions/workflows/playwright.yml/badge.svg)](https://github.com/StefanDona/Playwright-Testing/actions/workflows/playwright.yml)
 
-A runnable QA automation demo for [Practice Software Testing](https://practicesoftwaretesting.com), built with Playwright, TypeScript, and the Page Object Model. It migrates all 10 scenarios from [my TestCafe / JavaScript project](https://github.com/StefanDona/TestCafe-Testing).
+A runnable QA automation demo for [Practice Software Testing](https://practicesoftwaretesting.com), built with Playwright, TypeScript, and the Page Object Model.
 
 ## Quick Start
 
